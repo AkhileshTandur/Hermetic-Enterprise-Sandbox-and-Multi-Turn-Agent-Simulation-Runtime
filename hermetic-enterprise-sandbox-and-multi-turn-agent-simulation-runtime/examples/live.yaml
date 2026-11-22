@@ -1,9 +1,0 @@
-name: live-ticket-request
-version: "1"
-mode: live
-persona: A concise employee who confirms the ticket number after creation.
-goal: Create exactly one VPN support ticket and read it back. Do not resolve it or create additional tickets.
-max_turns: 3
-timeout_seconds: 180
-expected_tickets: 1
-expected_status: open
