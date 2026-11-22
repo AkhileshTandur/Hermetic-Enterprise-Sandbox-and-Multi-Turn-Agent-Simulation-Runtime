@@ -1,0 +1,15 @@
+{
+  "elapsed_seconds": 1.01064544,
+  "episodes": 32,
+  "failed": 0,
+  "passed": 32,
+  "workers": 4,
+  "environment": {
+    "python": "3.12.14",
+    "postgresql": "postgres (PostgreSQL) 16.2",
+    "go": "1.23.12",
+    "platform": "Linux x86_64 development container",
+    "cpu_count_visible": 9,
+    "note": "Single local trial; synthetic fixtures; not production capacity."
+  }
+}

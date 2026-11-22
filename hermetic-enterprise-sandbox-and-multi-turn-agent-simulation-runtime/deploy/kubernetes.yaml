@@ -1,0 +1,40 @@
+# Build/load the local image first. Supply DATABASE_URL in Secret sandbox-database.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sandbox
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: sandbox}
+  template:
+    metadata:
+      labels: {app: sandbox}
+    spec:
+      containers:
+        - name: api
+          image: sandbox-platform:local
+          imagePullPolicy: IfNotPresent
+          ports: [{containerPort: 8000}]
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef: {name: sandbox-database, key: DATABASE_URL}
+          readinessProbe:
+            httpGet: {path: /health, port: 8000}
+            initialDelaySeconds: 5
+          resources:
+            requests: {cpu: 100m, memory: 128Mi}
+            limits: {cpu: "1", memory: 512Mi}
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sandbox
+spec:
+  selector: {app: sandbox}
+  ports: [{port: 8000, targetPort: 8000}]
+  type: ClusterIP

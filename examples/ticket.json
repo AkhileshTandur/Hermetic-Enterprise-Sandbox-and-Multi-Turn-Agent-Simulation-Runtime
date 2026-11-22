@@ -1,0 +1,50 @@
+{
+  "name": "ticket-create-read-resolve",
+  "version": "1",
+  "seed": 42,
+  "expected_tickets": 1,
+  "expected_status": "resolved",
+  "steps": [
+    {
+      "user": "My VPN is not connecting. Please open an IT ticket.",
+      "action": {
+        "tool": "ticket.create",
+        "arguments": {
+          "title": "VPN connection failure",
+          "user_id": "employee-1"
+        },
+        "idempotency_key": "vpn-ticket"
+      },
+      "expect": {
+        "status": "open"
+      }
+    },
+    {
+      "user": "Can you retrieve the ticket you just created?",
+      "action": {
+        "tool": "ticket.read",
+        "arguments": {
+          "id": "$last.id"
+        }
+      },
+      "expect": {
+        "title": "VPN connection failure",
+        "status": "open"
+      }
+    },
+    {
+      "user": "Restarting the client fixed the issue. Resolve the ticket.",
+      "action": {
+        "tool": "ticket.update",
+        "arguments": {
+          "id": "$last.id",
+          "status": "resolved"
+        },
+        "idempotency_key": "resolve-vpn"
+      },
+      "expect": {
+        "status": "resolved"
+      }
+    }
+  ]
+}
